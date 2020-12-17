@@ -33,7 +33,16 @@ noble.on('discover', function(peripheral) {
           // The actual BPM data is stored in the 2nd bit in data (at array index 1)
           // Thanks Steve Daniel: http://www.raywenderlich.com/52080/introduction-core-bluetooth-building-heart-rate-monitor
           // Measurement docs here: https://developer.bluetooth.org/gatt/characteristics/Pages/CharacteristicViewer.aspx?u=org.bluetooth.characteristic.heart_rate_measurement.xml
-          console.log('data is: ' + data[1]);
+          console.log('HR: ' + data[1]);
+          
+          var i = 2;
+          while (i+1 < data.length) {
+            var lsb = data[i];
+            var msb = data[i+1];
+            var rr = 256*msb + lsb;
+            console.log('\tRR: ' + rr);
+            i += 2;
+          }
         });
       });
     });
