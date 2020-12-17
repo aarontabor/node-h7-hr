@@ -1,4 +1,14 @@
 var noble = require('noble');
+var fs = require('fs');
+
+const logfileDir = './logs';
+const logfile = `rr-intevals-${Date.now()}.csv`;
+
+if (!fs.existsSync(logfileDir)) {
+  fs.mkdirSync(logfileDir);
+}
+var writer = fs.createWriteStream(`${logfileDir}/${logfile}`, {flags: 'w'});
+writer.write('tod,rr\n');
 
 noble.on('stateChange', function(state) {
   if (state === 'poweredOn') {
@@ -41,6 +51,7 @@ noble.on('discover', function(peripheral) {
             var msb = data[i+1];
             var rr = 256*msb + lsb;
             console.log('\tRR: ' + rr);
+            writer.write(`${Date.now()}, ${rr}\n`);
             i += 2;
           }
         });
