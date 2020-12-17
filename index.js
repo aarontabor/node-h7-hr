@@ -57,5 +57,10 @@ noble.on('discover', function(peripheral) {
         });
       });
     });
+
+    peripheral.once('disconnect', function() {
+      console.log('Attempting to reconnect...');
+      noble.startScanning(["180d"]);
+    });
   });
 });
